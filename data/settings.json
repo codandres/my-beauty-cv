@@ -1,0 +1,5 @@
+{
+  "$schema": "./settings.schema.json",
+  "template": "midnight-sidebar",
+  "language": "en"
+}

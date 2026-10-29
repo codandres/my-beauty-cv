@@ -1,0 +1,14 @@
+# Vendor-managed and user-authored files: never reformat.
+.agents/
+.claude/
+docs/
+README.md
+CLAUDE.md
+skills-lock.json
+
+# Generated
+dist/
+out/
+data/cv.schema.json
+data/settings.schema.json
+package-lock.json

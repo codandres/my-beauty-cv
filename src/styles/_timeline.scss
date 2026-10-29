@@ -1,0 +1,15 @@
+// Shared timeline helpers for template stylesheets: `@use '../../styles/timeline';`
+
+/// Short horizontal bar closing the bottom end (the start, oldest point) of a vertical
+/// timeline line. Use inside a pseudo-element of the line's positioned container.
+/// `$line-left`/`$line-width` locate the line, so the cap is centred on it.
+@mixin cap($line-left, $line-width, $color, $bottom: 0, $cap-width: 2mm) {
+  content: '';
+  position: absolute;
+  bottom: $bottom;
+  left: calc(#{$line-left} + #{$line-width} / 2 - #{$cap-width} / 2);
+  width: $cap-width;
+  height: max($line-width, 0.3mm);
+  border-radius: 0.2mm;
+  background: $color;
+}

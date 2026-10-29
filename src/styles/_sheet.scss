@@ -1,0 +1,40 @@
+// The A4 sheet every template renders into: one A4-wide column on screen, flowing onto
+// A4 pages in print. Pagination polish is still open (see CLAUDE.md "Open decisions").
+
+$page-width: 210mm;
+$page-height: 297mm;
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.cv {
+  position: relative;
+  width: $page-width;
+  min-height: $page-height;
+  margin: 10mm auto;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1mm 4mm rgb(0 0 0 / 20%);
+}
+
+@media print {
+  body {
+    background: none;
+  }
+
+  .cv {
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+// Inside the editor's preview iframe: tighter frame, editor-matching backdrop.
+.is-embedded body {
+  background: #e4e7ec;
+}
+
+.is-embedded .cv {
+  margin: 8mm auto;
+}

@@ -1,0 +1,27 @@
+node_modules/
+dist/
+out/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+docs/CV_Template
+public/profile.jpg
+
+# AI tooling. CLAUDE.md stays committed as the project's agent instructions.
+# Claude Code: local settings, memory and installed skills
+.claude/*
+!.claude/settings.json
+CLAUDE.local.md
+# BMad Method: installed skills, lock file, config and generated output
+.agents/
+skills-lock.json
+_bmad/
+_bmad-output/
+# Other assistants
+.cursor/
+.windsurf/
+.aider*
+.continue/
+.codex/
+.gemini/

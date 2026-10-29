@@ -1,0 +1,354 @@
+@use '../../styles/timeline';
+
+// Midnight Sidebar: dark navy sidebar, white main column, teal accents.
+
+$navy: #0f172a;
+$ink: #0f172a;
+$body: #334155;
+$muted: #64748b;
+$side-text: #cbd5e1;
+$accent: #2dd4bf;
+$accent-deep: #0d9488;
+$accent-soft: #f0fdfa;
+$rule: #e2e8f0;
+// Child (client/project) timeline: muted teal, a step softer than the accents.
+$child-line: #cde5e1;
+$child-dot: #8cc9bf;
+$child-text: #4f9c92;
+$sidebar-width: 70mm;
+
+.cv--midnight-sidebar {
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  // The sidebar colour is painted on the sheet, not the column, so it repeats on every
+  // printed page (a grid column's background stops at the first page break).
+  background: linear-gradient(90deg, $navy $sidebar-width, #fff $sidebar-width);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 7.8pt;
+  line-height: 1.5;
+  color: $body;
+
+  // In print the sheet ends with the content, so its gradient would stop partway down the
+  // last page. A fixed element repeats on every printed page at full page height instead.
+  // It replaces the gradient rather than sitting behind it: the two edges land a fraction
+  // of a millimetre apart in the PDF.
+  @media print {
+    background: none;
+
+    &::before {
+      content: '';
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: -1;
+      width: $sidebar-width;
+      background: $navy;
+    }
+  }
+
+  // ---------- Sidebar ----------
+  .ms-sidebar {
+    padding: 14mm 8mm 12mm;
+    color: $side-text;
+
+    &__photo {
+      width: 36mm;
+      height: 36mm;
+      margin: 0 auto 7mm;
+      border-radius: 50%;
+      object-fit: cover;
+      outline: 0.7mm solid $accent;
+      outline-offset: 1.4mm;
+    }
+
+    &__name {
+      font-size: 19pt;
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+
+    &__headline {
+      margin-top: 2.5mm;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: $accent;
+    }
+  }
+
+  .ms-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 2.6mm;
+    margin: 7mm 0 2mm;
+    padding-top: 6mm;
+    border-top: 0.25mm solid rgb(255 255 255 / 12%);
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+    gap: 2.6mm;
+    font-size: 7.3pt;
+    overflow-wrap: anywhere;
+
+    .icon {
+      box-sizing: content-box;
+      width: 2.6mm;
+      height: 2.6mm;
+      padding: 1.3mm;
+      border-radius: 1.4mm;
+      background: rgb(45 212 191 / 14%);
+      color: $accent;
+    }
+  }
+
+  .ms-side-section {
+    margin-top: 8mm;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+      margin-bottom: 4mm;
+      font-size: 7.2pt;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fff;
+
+      &::after {
+        content: '';
+        flex: 1;
+        height: 0.25mm;
+        background: rgb(255 255 255 / 15%);
+      }
+    }
+  }
+
+  .ms-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2mm;
+  }
+
+  .ms-skill {
+    break-inside: avoid;
+
+    &__name {
+      display: block;
+      margin-bottom: 1.3mm;
+      font-size: 7.3pt;
+      font-weight: 600;
+      line-height: 1.35;
+      color: #f1f5f9;
+    }
+
+    &__track {
+      display: block;
+      height: 1.3mm;
+      border-radius: 1mm;
+      background: rgb(255 255 255 / 10%);
+    }
+
+    &__fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, $accent-deep, $accent);
+    }
+  }
+
+  // ---------- Main column ----------
+  .ms-main {
+    padding: 14mm 11mm 8mm 10mm;
+  }
+
+  // No trailing space after the last entry: it would spill onto an empty extra page.
+  .ms-main > :last-child,
+  .ms-main > :last-child .ms-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .ms-section {
+    margin-bottom: 8mm;
+
+    &__title {
+      margin-bottom: 4.5mm;
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: $ink;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 9mm;
+        height: 0.9mm;
+        margin-top: 1.6mm;
+        border-radius: 0.5mm;
+        background: $accent;
+      }
+    }
+  }
+
+  .ms-summary {
+    font-size: 8.2pt;
+    line-height: 1.65;
+  }
+
+  .ms-timeline {
+    position: relative;
+    padding-left: 6mm;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 1.5mm;
+      bottom: 0;
+      left: 1.1mm;
+      width: 0.35mm;
+      background: $rule;
+    }
+
+    &::after {
+      @include timeline.cap(1.1mm, 0.35mm, $rule, $cap-width: 2.8mm);
+    }
+  }
+
+  .ms-entry {
+    position: relative;
+    margin-bottom: 6mm;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0.9mm;
+      left: -6mm;
+      width: 2.6mm;
+      height: 2.6mm;
+      border: 0.6mm solid $accent-deep;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    &__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 3mm;
+    }
+
+    &__title {
+      font-size: 10pt;
+      font-weight: 800;
+      line-height: 1.3;
+      color: $ink;
+    }
+
+    &__period {
+      flex: none;
+      padding: 0.5mm 2.2mm;
+      border-radius: 99mm;
+      background: $accent-soft;
+      font-size: 6.6pt;
+      font-weight: 700;
+      color: $accent-deep;
+      white-space: nowrap;
+    }
+
+    &__organization {
+      margin: 0.4mm 0 2mm;
+      font-size: 8pt;
+      font-weight: 700;
+      color: $accent-deep;
+    }
+  }
+
+  .block {
+    margin-bottom: 1.2mm;
+  }
+
+  .block__label {
+    font-weight: 700;
+    color: $ink;
+  }
+
+  // Child timeline: projects of one company, on a thinner line with small dots.
+  .ms-projects {
+    position: relative;
+    margin-top: 2mm;
+    padding-left: 5mm;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 1.6mm;
+      bottom: 1mm;
+      left: 0.75mm;
+      width: 0.3mm;
+      background: $child-line;
+    }
+
+    &::after {
+      @include timeline.cap(0.75mm, 0.3mm, $child-line, $bottom: 1mm);
+    }
+  }
+
+  .ms-project {
+    position: relative;
+
+    & + & {
+      margin-top: 3.5mm;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 1.1mm;
+      left: -5mm;
+      width: 1.8mm;
+      height: 1.8mm;
+      border-radius: 50%;
+      background: $child-dot;
+    }
+
+    // Same pill shape as the company period but softer: outlined, smaller, lighter.
+    // Floated so the text wraps beside it.
+    .ms-entry__period {
+      float: right;
+      margin: 0 0 1mm 3mm;
+      padding: 0.3mm 2mm;
+      border: 0.25mm solid $child-line;
+      background: none;
+      font-size: 6pt;
+      font-weight: 600;
+      color: $child-text;
+    }
+
+    // The project's role, a step softer than the company role.
+    .ms-entry__title {
+      margin-bottom: 0.6mm;
+      font-size: 8.6pt;
+      font-weight: 700;
+    }
+  }
+
+  .block__bullets li {
+    position: relative;
+    padding-left: 3.2mm;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0.62em;
+      left: 0.4mm;
+      width: 1.1mm;
+      height: 1.1mm;
+      border-radius: 50%;
+      background: $accent;
+    }
+  }
+}

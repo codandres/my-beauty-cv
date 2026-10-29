@@ -1,0 +1,268 @@
+@use '../../styles/timeline';
+
+// Editorial Serif: magazine typography on warm paper, terracotta accents.
+
+$paper: #fbf8f3;
+$ink: #1c1917;
+$body: #44403c;
+$muted: #78716c;
+$accent: #b4532a;
+$rule: #d6cfc4;
+$dot-empty: #e7e0d5;
+$period-col: 34mm;
+
+.cv--editorial-serif {
+  padding: 15mm 15mm 12mm;
+  background: $paper;
+  font-family: 'Inter', sans-serif;
+  font-size: 7.8pt;
+  line-height: 1.55;
+  color: $body;
+
+  .es-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10mm;
+    padding-bottom: 7mm;
+    border-bottom: 0.25mm solid $ink;
+
+    &__headline {
+      margin-bottom: 2.5mm;
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: $accent;
+    }
+
+    &__name {
+      font-family: 'Fraunces', serif;
+      font-size: 32pt;
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: $ink;
+    }
+
+    &__photo {
+      flex: none;
+      width: 32mm;
+      height: 40mm;
+      border-radius: 16mm 16mm 1mm 1mm; // arch
+      object-fit: cover;
+    }
+  }
+
+  .es-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5mm 5mm;
+    margin-top: 5mm;
+    font-size: 7.4pt;
+    color: $body;
+  }
+
+  .contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6mm;
+
+    .icon {
+      color: $accent;
+    }
+  }
+
+  .es-section {
+    margin-top: 7mm;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 4mm;
+      margin-bottom: 4mm;
+      font-family: 'Fraunces', serif;
+      font-size: 15pt;
+      font-style: italic;
+      font-weight: 400;
+      color: $ink;
+
+      &::after {
+        content: '';
+        flex: 1;
+        height: 0.2mm;
+        background: $rule;
+      }
+    }
+  }
+
+  .es-summary {
+    font-size: 8.6pt;
+    line-height: 1.7;
+    color: $ink;
+
+    &::first-letter {
+      float: left;
+      margin: 1mm 2.2mm 0 0;
+      font-family: 'Fraunces', serif;
+      font-size: 34pt;
+      font-weight: 600;
+      line-height: 0.8;
+      color: $accent;
+    }
+  }
+
+  .es-ratings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.6mm 10mm;
+  }
+
+  .es-rating {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4mm;
+    padding-bottom: 2.2mm;
+    border-bottom: 0.2mm dotted $rule;
+    break-inside: avoid;
+
+    &__name {
+      font-weight: 500;
+      color: $ink;
+    }
+  }
+
+  .es-dots {
+    display: inline-flex;
+    flex: none;
+    gap: 1.2mm;
+  }
+
+  .es-dots-step {
+    width: 1.8mm;
+    height: 1.8mm;
+    border-radius: 50%;
+    background: $dot-empty;
+
+    &.is-filled {
+      background: $accent;
+    }
+  }
+
+  .es-row {
+    display: grid;
+    grid-template-columns: $period-col 1fr;
+  }
+
+  .es-entry {
+    padding: 4mm 0;
+    border-top: 0.2mm solid $rule;
+
+    &:first-of-type {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    &__period {
+      padding: 1mm 4mm 0 0; // right gap so long periods ("May 2022 - Actualidad") wrap
+      font-size: 6.6pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: $muted;
+    }
+
+    &__title {
+      font-family: 'Fraunces', serif;
+      font-size: 12pt;
+      font-weight: 600;
+      line-height: 1.25;
+      color: $ink;
+    }
+
+    &__organization {
+      margin-bottom: 2mm;
+      font-family: 'Fraunces', serif;
+      font-size: 9pt;
+      font-style: italic;
+      color: $accent;
+    }
+  }
+
+  .block {
+    margin-bottom: 1mm;
+  }
+
+  .block__label {
+    font-weight: 600;
+    color: $ink;
+  }
+
+  // Child timeline: a hairline with small diamonds, one row per client/project.
+  .es-project {
+    padding-top: 1.5mm;
+
+    & + & {
+      padding-top: 3mm;
+    }
+
+    &__body {
+      position: relative;
+      padding-left: 4.5mm;
+      border-left: 0.25mm solid #e3c4b3;
+    }
+
+    &__body::before {
+      content: '';
+      position: absolute;
+      top: 1.2mm;
+      left: -0.95mm;
+      width: 1.6mm;
+      height: 1.6mm;
+      background: $accent;
+      transform: rotate(45deg);
+    }
+
+    // The line is the body's left border; cap it under the last project.
+    &:last-child .es-project__body::after {
+      @include timeline.cap(-0.25mm, 0.25mm, #e3c4b3, $cap-width: 2.2mm);
+    }
+
+    // Softer than the company period: smaller, lighter, warmer grey.
+    .es-entry__period {
+      font-size: 6.1pt;
+      font-weight: 500;
+      color: #a8a29e;
+    }
+
+    // The project's role, a step softer than the company role.
+    .es-entry__title {
+      margin-bottom: 0.8mm;
+      font-size: 10pt;
+      font-weight: 400;
+    }
+
+    // Join the line across the gap between consecutive projects.
+    & + & .es-project__body {
+      margin-top: -3mm;
+      padding-top: 3mm;
+
+      &::before {
+        top: 4.2mm;
+      }
+    }
+  }
+
+  .block__bullets li {
+    position: relative;
+    padding-left: 4mm;
+
+    &::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: $accent;
+    }
+  }
+}

@@ -1,0 +1,239 @@
+@use '../../styles/timeline';
+
+// Modern Blue: measured from docs/CV_Template (A4, 791 px wide PNGs).
+
+$primary: #3d94e3; // name, section titles, organizations, bars, timeline markers
+$track: #ebf5fc;
+$header-bg: #f5f5f5;
+$divider: #e3e3e3;
+$text: #000;
+
+$gutter-x: 7mm; // page edge → content, both sides
+$aside-width: 57mm; // left column, page edge → divider
+$main-offset: 7mm; // divider → right column content
+$marker-size: 2.2mm;
+$child-line: #c5dcf3;
+$child-marker: 1.6mm;
+$child-indent: 5mm; // child line → project text
+
+.cv--modern-blue {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8pt;
+  line-height: 1.45;
+  color: $text;
+
+  // Vertical divider between the two body columns.
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: $aside-width;
+    border-left: 0.3mm solid $divider;
+  }
+
+  .mb-header {
+    position: relative;
+    z-index: 1; // covers the divider line
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6mm;
+    padding: 7mm $gutter-x 8mm;
+    background: $header-bg;
+    border-bottom: 0.3mm solid $divider;
+
+    &__name {
+      margin-bottom: 3mm;
+      font-size: 22pt;
+      font-weight: 700;
+      line-height: 1.2;
+      color: $primary;
+    }
+
+    &__contacts {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 4mm;
+      font-size: 9pt;
+      line-height: 1.8;
+    }
+
+    &__photo {
+      width: 22mm;
+      height: 22mm;
+      border: 0.8mm solid #ddd;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &__summary {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5mm;
+
+    .icon {
+      color: $primary;
+    }
+  }
+
+  .mb-body {
+    padding: 7mm 0;
+  }
+
+  // Two-column row: aside (titles, dates) | main (content).
+  .mb-row {
+    display: grid;
+    grid-template-columns: $aside-width 1fr;
+
+    &__aside {
+      padding-inline: $gutter-x 4mm;
+    }
+
+    &__main {
+      padding-inline: $main-offset $gutter-x;
+    }
+  }
+
+  .mb-section {
+    margin-bottom: 7mm;
+
+    &__title {
+      font-size: 9pt;
+      font-weight: 700;
+      color: $primary;
+    }
+
+    &--timeline > .mb-row {
+      margin-bottom: 2mm;
+    }
+  }
+
+  .mb-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 7mm;
+
+    &__column {
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+    }
+  }
+
+  .mb-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+    break-inside: avoid;
+
+    &__label {
+      font-weight: 700;
+    }
+
+    &__track {
+      display: block;
+      height: 1.2mm;
+      background: $track;
+    }
+
+    &__fill {
+      display: block;
+      height: 100%;
+      background: $primary;
+    }
+  }
+
+  .mb-entry {
+    position: relative;
+    margin-bottom: 5mm;
+
+    // Blue square sitting on the divider line.
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0.5mm;
+      left: calc(#{$aside-width} - #{$marker-size} / 2);
+      width: $marker-size;
+      height: $marker-size;
+      background: $primary;
+    }
+
+    &__period,
+    &__title {
+      font-weight: 700;
+    }
+
+    &__organization {
+      font-weight: 700;
+      color: $primary;
+    }
+  }
+
+  .block__label {
+    font-weight: 700;
+  }
+
+  // Child timeline: one row per client/project, a thin line with hollow markers.
+  .mb-project {
+    margin-top: 1.5mm;
+
+    & + & {
+      margin-top: 0;
+      padding-top: 3mm;
+    }
+
+    &__body {
+      position: relative;
+      padding-left: $child-indent;
+      // The line runs alongside the project, so consecutive projects join into one line.
+      border-left: 0.3mm solid $child-line;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0.6mm;
+        left: calc(-#{$child-marker} / 2 - 0.15mm);
+        width: $child-marker;
+        height: $child-marker;
+        border: 0.35mm solid $primary;
+        background: #fff;
+      }
+    }
+
+    // The line is the body's left border; cap it under the last project.
+    &:last-child .mb-project__body::after {
+      @include timeline.cap(-0.3mm, 0.3mm, $child-line, $cap-width: 2.2mm);
+    }
+
+    // Softer than the company period: smaller, lighter and grey.
+    .mb-entry__period {
+      font-size: 7.2pt;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    // The project's role, a step softer than the company role.
+    .mb-entry__title {
+      margin-bottom: 0.5mm;
+      font-weight: 600;
+    }
+
+    // Join the line across the gap between consecutive projects.
+    & + & .mb-project__body {
+      margin-top: -3mm;
+      padding-top: 3mm;
+
+      &::before {
+        top: 3.6mm;
+      }
+    }
+  }
+
+  .block__bullets li::before {
+    content: '• ';
+  }
+}
